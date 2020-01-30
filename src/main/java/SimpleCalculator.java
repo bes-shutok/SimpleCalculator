@@ -43,7 +43,7 @@ public class SimpleCalculator {
         System.out.println("Числа и знак операции должны быть разделены одним пробелом");
         System.out.println("Калькулятор умеет работать либо с арабскими (1,2,3,4,5…), либо с римскими (I,II,III," +
                 "IV,V…) числами от 1 до 10 включительно (но не более).");
-        System.out.println("После курсора введите требуемую операцию");
+        System.out.println("Введите требуемую операцию");
         String[] request = br.readLine().split(" ");
         if (request.length != 3) {
             System.out.println("Количество аргументов не соответствует требованиям!");
@@ -52,13 +52,20 @@ public class SimpleCalculator {
         String a = request[0];
         String op = request[1];
         String b = request[2];
+
         // Операция должна быть одной из допустимых
         if (Arrays.stream(allowedOperations).anyMatch(op::equals) ) {
             // Все цифры римские?
             try {
                 int intA = RomanArabicConverter.romanToArabic(a);
                 int intB = RomanArabicConverter.romanToArabic(b);
-                System.out.println(RomanArabicConverter.arabicToRoman(resolve(intA,intB,op,a,b)));
+                int result = resolve(intA,intB,op,a,b);
+                if (result < 0) {
+                    result = - result;
+                    System.out.println("-" + RomanArabicConverter.arabicToRoman(result));
+                } else {
+                    System.out.println(RomanArabicConverter.arabicToRoman(result));
+                }
             }
             catch(IllegalArgumentException e1) {
                 // Все цифры арабсие?
